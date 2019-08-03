@@ -10,15 +10,22 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        var recipeTypeArr: Array<String> = emptyArray()
+
         val xmlParser: XmlPullParser = this.resources.getXml(R.xml.recipetypes)
         while (xmlParser.eventType != XmlPullParser.END_DOCUMENT) {
             if(xmlParser.name == "type") {
                 val name = xmlParser.getAttributeValue(null,"name")
                 if(name != null) {
-                    println("okok::"+name)
+                    recipeTypeArr += name
                 }
             }
             xmlParser.next()
         }
+
+        val localDB = LocalDB(this, null, null, 1, null)
+        localDB.populateRecipeTypes(recipeTypeArr)
+
+        println(":::"+localDB.showRecipeTypes().size)
     }
 }
