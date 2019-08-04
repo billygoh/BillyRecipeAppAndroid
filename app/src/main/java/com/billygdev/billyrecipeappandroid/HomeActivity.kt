@@ -38,6 +38,10 @@ class HomeActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             startActivity(intent)
         })
         recipeRV.adapter = adapter
+
+        addRecipeFAB.setOnClickListener(View.OnClickListener {
+            println(":::clickkkk")
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
