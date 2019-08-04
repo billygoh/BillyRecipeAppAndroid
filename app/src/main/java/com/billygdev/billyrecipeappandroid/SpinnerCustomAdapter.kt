@@ -1,13 +1,14 @@
 package com.billygdev.billyrecipeappandroid
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
 
-class SpinnerCustomAdapter(val context: Context, val recipeTypeArr: Array<RecipeType>): BaseAdapter() {
+class SpinnerCustomAdapter(val context: Context, val recipeTypeArr: Array<RecipeType>, val fromActionBar: Boolean): BaseAdapter() {
 
     val inflater: LayoutInflater = LayoutInflater.from(context)
 
@@ -37,6 +38,13 @@ class SpinnerCustomAdapter(val context: Context, val recipeTypeArr: Array<Recipe
         }
 
         viewHolder.label.text = recipeTypeArr.get(position).name
+
+        if(fromActionBar) {
+            viewHolder.label.setTextColor(Color.WHITE)
+        } else {
+            viewHolder.label.setTextColor(Color.BLACK)
+        }
+
         return view
     }
 

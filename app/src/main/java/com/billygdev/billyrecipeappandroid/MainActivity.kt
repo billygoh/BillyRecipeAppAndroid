@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             localDB.populateRecipeTypes(recipeTypeArr)
 
             recipeTypeSpinner.onItemSelectedListener = this
-            val arrayAdapter = SpinnerCustomAdapter(this, localDB.showRecipeTypes())
+            val arrayAdapter = SpinnerCustomAdapter(this, localDB.showRecipeTypes(), false)
             recipeTypeSpinner.adapter = arrayAdapter
         }
 
