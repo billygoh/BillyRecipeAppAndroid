@@ -106,4 +106,132 @@ class LocalDB(
 //        db.close()
         return recipeTypeArr
     }
+
+    fun getRecipeType(recipeTypeID: Int): RecipeType? {
+        val query = "SELECT * FROM $TABLE_RECIPE_TYPES WHERE $COLUMN_RECIPE_TYPE_ID = \"$recipeTypeID\""
+
+        val db = this.writableDatabase
+
+        val cursor = db.rawQuery(query, null)
+
+        var recipeType: RecipeType? = null
+
+        if (cursor.moveToFirst()) {
+            cursor.moveToFirst()
+
+            val id = Integer.parseInt(cursor.getString(0))
+            val name = cursor.getString(1)
+            recipeType = RecipeType(id, name)
+            cursor.close()
+        }
+
+        db.close()
+        return recipeType
+    }
+
+    fun addRecipe(recipeArr: Array<Recipe>, recipeTypeID: Int): Boolean {
+        val db = this.writableDatabase
+        if(recipeArr.isNotEmpty()) {
+            for(recipe in recipeArr) {
+                val values = ContentValues()
+                values.put(COLUMN_RECIPE_TYPE_ID_FK, recipeTypeID)
+                values.put(COLUMN_RECIPE_IMAGEURL, recipe.imageURL)
+                values.put(COLUMN_RECIPE_NAME, recipe.name)
+                values.put(COLUMN_RECIPE_INGREDIENTS, recipe.ingredients)
+                values.put(COLUMN_RECIPE_STEPS, recipe.steps)
+                values.put(COLUMN_RECIPE_PREPTIME, recipe.prepTime)
+
+                db.insert(TABLE_RECIPE, null, values)
+            }
+            db.close()
+            return true
+        } else {
+            db.close()
+            return false
+        }
+    }
+
+    fun editRecipe(recipe: Recipe): Boolean {
+        val db = this.writableDatabase
+
+        val values = ContentValues()
+        values.put(COLUMN_RECIPE_IMAGEURL, recipe.imageURL)
+        values.put(COLUMN_RECIPE_NAME, recipe.name)
+        values.put(COLUMN_RECIPE_INGREDIENTS, recipe.ingredients)
+        values.put(COLUMN_RECIPE_STEPS, recipe.steps)
+        values.put(COLUMN_RECIPE_PREPTIME, recipe.prepTime)
+
+        val whereQuery = "id = ${recipe.id}"
+
+        db.update(TABLE_RECIPE, values, whereQuery, null)
+        return true
+    }
+
+    fun getRecipeList(recipeTypeID: Int): Array<Recipe> {
+        val query = "SELECT * FROM $TABLE_RECIPE WHERE $COLUMN_RECIPE_TYPE_ID_FK = \"$recipeTypeID\""
+
+        val db = this.writableDatabase
+
+        val cursor = db.rawQuery(query, null)
+
+        var recipeArr: Array<Recipe> = emptyArray()
+
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast) {
+                var recipe: Recipe
+                val id = Integer.parseInt(cursor.getString(0))
+                val name = cursor.getString(2)
+                val imageURL = cursor.getString(3)
+                val ingredients = cursor.getString(4)
+                val steps = cursor.getString(5)
+                val prepTime = cursor.getString(6)
+
+                recipe = Recipe(id, recipeTypeID, name, imageURL, ingredients, steps, prepTime)
+                recipeArr += recipe
+
+                cursor.moveToNext()
+            }
+        }
+
+//        db.close()
+
+        return recipeArr
+    }
+
+    fun getRecipeDetails(recipeID: Int): Recipe? {
+        val query = "SELECT * FROM $TABLE_RECIPE WHERE $COLUMN_RECIPE_ID = \"$recipeID\""
+
+        val db = this.writableDatabase
+
+        val cursor = db.rawQuery(query, null)
+
+        var recipe: Recipe? = null
+
+        if (cursor.moveToFirst()) {
+            cursor.moveToFirst()
+
+            val id = Integer.parseInt(cursor.getString(0))
+            val name = cursor.getString(2)
+            val recipeTypeID = Integer.parseInt(cursor.getString(1))
+            val imageURL = cursor.getString(3)
+            val ingredients = cursor.getString(4)
+            val steps = cursor.getString(5)
+            val prepTime = cursor.getString(6)
+            recipe = Recipe(id, recipeTypeID, name, imageURL, ingredients, steps, prepTime)
+            cursor.close()
+        }
+
+        db.close()
+        return recipe
+    }
+
+    fun removeRecipe(recipeID: Int): Boolean {
+        val db = this.writableDatabase
+
+        db.delete(TABLE_RECIPE, "$COLUMN_RECIPE_ID = $recipeID",
+            null)
+
+        db.close()
+        return true
+    }
 }
