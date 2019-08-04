@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">BillyRecipeAppAndroid</string>
+    <string name="title_activity_home">Recipe</string>
 </resources>

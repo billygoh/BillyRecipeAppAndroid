@@ -56,7 +56,7 @@ class LocalDB(
         val COLUMN_RECIPE_TYPE_ID = "id"
         val COLUMN_RECIPE_TYPE_NAME = "productname"
 
-        val TABLE_RECIPE = "reecipe"
+        val TABLE_RECIPE = "recipe"
         val COLUMN_RECIPE_ID = "id"
         val COLUMN_RECIPE_TYPE_ID_FK = "recipeTypeId"
         val COLUMN_RECIPE_NAME = "name"
