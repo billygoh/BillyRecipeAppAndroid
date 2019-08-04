@@ -24,6 +24,15 @@ class HomeActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
+        addRecipeFAB.setOnClickListener(View.OnClickListener {
+            val intent = Intent(this, AddUpdateRecipeActivity::class.java)
+            intent.putExtra("isEditingRecipe", false)
+            startActivity(intent)
+        })
+    }
+
+    override fun onResume() {
+        super.onResume()
         val sharedPref = this.getSharedPreferences("RECIPE_PREF", Context.MODE_PRIVATE)
         val selectedRecipeTypeID = sharedPref.getInt("selectedRecipeTypeID", 0)
 
@@ -38,10 +47,6 @@ class HomeActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             startActivity(intent)
         })
         recipeRV.adapter = adapter
-
-        addRecipeFAB.setOnClickListener(View.OnClickListener {
-            println(":::clickkkk")
-        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
