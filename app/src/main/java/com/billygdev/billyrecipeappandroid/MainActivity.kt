@@ -38,7 +38,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkRecipeTypeSelected(): Boolean {
-        print(":::")
         val recipeTypeArr = localDB.showRecipeTypes()
         val sharedPref = this.getSharedPreferences("RECIPE_PREF", Context.MODE_PRIVATE)
 
