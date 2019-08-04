@@ -6,14 +6,22 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 import org.xmlpull.v1.XmlPullParser
+import android.graphics.BitmapFactory
+import android.graphics.Bitmap
+import android.os.Handler
+import android.widget.Toast
+import kotlin.concurrent.schedule
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+
 
 class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
-    private val localDB = LocalDB(this, null, null, 1, null)
-    var spinnerSelectedRecipeTypeID: Int = 0
+    private val localDB = LocalDB(this)
+    var currentSelectedRecipeTypeID: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +54,26 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         }
 
         beginBtn.setOnClickListener(View.OnClickListener {
-            println("clickkkkkkkkk:::")
+            val sharedPref = this.getSharedPreferences("RECIPE_PREF", Context.MODE_PRIVATE)
+            loadingIndicator.visibility = View.VISIBLE
+            beginBtn.isEnabled = false
+
+            Handler().postDelayed({
+                for (i in 1..5) {
+                    preAddData(i)
+                }
+
+                if(currentSelectedRecipeTypeID == 0) {
+                    currentSelectedRecipeTypeID = localDB.showRecipeTypes()[0].id
+                }
+
+                sharedPref.edit().putInt("selectedRecipeTypeID", currentSelectedRecipeTypeID).commit()
+
+                val intent = Intent(this, HomeActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                startActivity(intent)
+            }, 500)
         })
     }
 
@@ -64,12 +91,73 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         return false
     }
 
-    private fun preAddData() {
+    private fun preAddData(recipeTypeID: Int) {
+        var recipeArr: Array<Recipe> = emptyArray()
+        val mockText = ""
+        val mockPrepTimes = "30 Minutes"
 
+        when(recipeTypeID) {
+            1 -> {
+                addImageToDocumentPath(R.drawable.burrito, "burrito.jpg")
+                addImageToDocumentPath(R.drawable.quesaddila, "quesaddila.jpg")
+                addImageToDocumentPath(R.drawable.taco, "taco.jpg")
+                recipeArr += Recipe(0, currentSelectedRecipeTypeID, "Burrito", "burrito.jpg", mockText, mockText, mockPrepTimes)
+                recipeArr += Recipe(0, currentSelectedRecipeTypeID, "Quesaddila", "quesaddila.jpg", mockText, mockText, mockPrepTimes)
+                recipeArr += Recipe(0, currentSelectedRecipeTypeID, "Taco", "taco.jpg", mockText, mockText, mockPrepTimes)
+            }
+            2 -> {
+                addImageToDocumentPath(R.drawable.burrito, "aglioolio.jpg")
+                addImageToDocumentPath(R.drawable.quesaddila, "pizza.jpg")
+                addImageToDocumentPath(R.drawable.taco, "carbonara.jpg")
+                recipeArr += Recipe(0, currentSelectedRecipeTypeID, "Aglio Olio", "aglioolio.jpg", mockText, mockText, mockPrepTimes)
+                recipeArr += Recipe(0, currentSelectedRecipeTypeID, "Pizza", "pizza.jpg", mockText, mockText, mockPrepTimes)
+                recipeArr += Recipe(0, currentSelectedRecipeTypeID, "Carbonara", "carbonara.jpg", mockText, mockText, mockPrepTimes)
+            }
+            3 -> {
+                addImageToDocumentPath(R.drawable.burrito, "sushi.jpg")
+                addImageToDocumentPath(R.drawable.quesaddila, "soba.jpg")
+                addImageToDocumentPath(R.drawable.taco, "udon.jpg")
+                recipeArr += Recipe(0, currentSelectedRecipeTypeID, "Sushi", "sushi.jpg", mockText, mockText, mockPrepTimes)
+                recipeArr += Recipe(0, currentSelectedRecipeTypeID, "Soba", "soba.jpg", mockText, mockText, mockPrepTimes)
+                recipeArr += Recipe(0, currentSelectedRecipeTypeID, "Udon", "udon.jpg", mockText, mockText, mockPrepTimes)
+            }
+            4 -> {
+                addImageToDocumentPath(R.drawable.burrito, "kimchi.jpg")
+                addImageToDocumentPath(R.drawable.quesaddila, "friedchicken.jpg")
+                addImageToDocumentPath(R.drawable.taco, "bibimbap.jpg")
+                recipeArr += Recipe(0, currentSelectedRecipeTypeID, "Kimchi", "kimchi.jpg", mockText, mockText, mockPrepTimes)
+                recipeArr += Recipe(0, currentSelectedRecipeTypeID, "Korean Fried Chicken", "friedchicken.jpg", mockText, mockText, mockPrepTimes)
+                recipeArr += Recipe(0, currentSelectedRecipeTypeID, "Bibimbap", "bibimbap.jpg", mockText, mockText, mockPrepTimes)
+            }
+        }
+
+        localDB.addRecipe(recipeArr, recipeTypeID)
+    }
+
+    private fun addImageToDocumentPath(imageDrawable: Int, imageFileName: String) {
+        val bm = BitmapFactory.decodeResource(this.resources, imageDrawable)
+        val file = File(this.filesDir, imageFileName)
+
+        var fos: FileOutputStream? = null
+        try {
+            fos = FileOutputStream(file)
+
+            bm.compress(Bitmap.CompressFormat.JPEG, 70, fos)
+
+            fos.close()
+        } catch (e: IOException) {
+            if (fos != null) {
+                try {
+                    fos.close()
+                } catch (e1: IOException) {
+                    e1.printStackTrace()
+                }
+            }
+        }
     }
 
     override fun onItemSelected(av: AdapterView<*>?, view: View?, index: Int, id: Long) {
-        spinnerSelectedRecipeTypeID = id.toInt()
+        currentSelectedRecipeTypeID = id.toInt()
     }
 
     override fun onNothingSelected(av: AdapterView<*>?) {

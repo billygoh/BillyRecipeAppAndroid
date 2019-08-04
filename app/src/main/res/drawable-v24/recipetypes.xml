@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<recipe>
+    <type id="1" name="Mexican"/>
+    <type id="2" name="Italian"/>
+    <type id="3" name="Japanese"/>
+    <type id="4" name="Korean"/>
+    <type id="5" name="Vegetarian"/>
+</recipe>

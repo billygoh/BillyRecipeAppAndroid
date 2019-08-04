@@ -39,5 +39,12 @@
         android:layout_below="@+id/recipeTypeSpinner"
         android:textColor="@android:color/white"
         android:layout_margin="20dp"/>
+    
+    <ProgressBar android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:id="@+id/loadingIndicator"
+        android:indeterminateOnly="true"
+        android:keepScreenOn="true"
+        android:layout_centerInParent="true"
+        android:visibility="invisible"/>
 
 </RelativeLayout>

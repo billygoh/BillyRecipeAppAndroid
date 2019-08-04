@@ -2,20 +2,12 @@ package com.billygdev.billyrecipeappandroid
 
 import android.content.ContentValues
 import android.content.Context
-import android.database.DatabaseErrorHandler
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
-class LocalDB(
-    context: Context?,
-    name: String?,
-    factory: SQLiteDatabase.CursorFactory?,
-    version: Int,
-    errorHandler: DatabaseErrorHandler?
-) : SQLiteOpenHelper(context, name, factory, version, errorHandler) {
+class LocalDB(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     override fun onCreate(db: SQLiteDatabase?) {
-        println("DB CREATEEEEEE")
         val CREATE_RECIPE_TYPE_TABLE = ("CREATE TABLE IF NOT EXISTS " +
                 TABLE_RECIPE_TYPES + "("
                 + COLUMN_RECIPE_TYPE_ID + " INTEGER PRIMARY KEY," +
@@ -33,8 +25,6 @@ class LocalDB(
                 + " TEXT," + COLUMN_RECIPE_PREPTIME
                 + " TEXT" + ")")
 
-        println("table:::"+CREATE_RECIPE_TABLE)
-
         db.run {
             this?.execSQL(CREATE_RECIPE_TYPE_TABLE)
             this?.execSQL(CREATE_RECIPE_TABLE)
@@ -42,6 +32,7 @@ class LocalDB(
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, p1: Int, p2: Int) {
+        println(":::HERE??")
         db.run {
             this?.execSQL("DROP TABLE IF EXISTS " + TABLE_RECIPE_TYPES)
             this?.execSQL("DROP TABLE IF EXISTS " + TABLE_RECIPE)
@@ -125,7 +116,7 @@ class LocalDB(
             cursor.close()
         }
 
-        db.close()
+//        db.close()
         return recipeType
     }
 
@@ -143,10 +134,10 @@ class LocalDB(
 
                 db.insert(TABLE_RECIPE, null, values)
             }
-            db.close()
+//            db.close()
             return true
         } else {
-            db.close()
+//            db.close()
             return false
         }
     }
@@ -221,7 +212,7 @@ class LocalDB(
             cursor.close()
         }
 
-        db.close()
+//        db.close()
         return recipe
     }
 
@@ -231,7 +222,7 @@ class LocalDB(
         db.delete(TABLE_RECIPE, "$COLUMN_RECIPE_ID = $recipeID",
             null)
 
-        db.close()
+//        db.close()
         return true
     }
 }
