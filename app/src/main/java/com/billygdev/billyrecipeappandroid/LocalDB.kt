@@ -158,14 +158,14 @@ class LocalDB(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null,
         return true
     }
 
-    fun getRecipeList(recipeTypeID: Int): Array<Recipe> {
+    fun getRecipeList(recipeTypeID: Int): ArrayList<Recipe> {
         val query = "SELECT * FROM $TABLE_RECIPE WHERE $COLUMN_RECIPE_TYPE_ID_FK = \"$recipeTypeID\""
 
         val db = this.writableDatabase
 
         val cursor = db.rawQuery(query, null)
 
-        var recipeArr: Array<Recipe> = emptyArray()
+        var recipeArr = ArrayList<Recipe>()
 
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast) {
@@ -178,7 +178,7 @@ class LocalDB(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null,
                 val prepTime = cursor.getString(6)
 
                 recipe = Recipe(id, recipeTypeID, name, imageURL, ingredients, steps, prepTime)
-                recipeArr += recipe
+                recipeArr.add(recipe)
 
                 cursor.moveToNext()
             }

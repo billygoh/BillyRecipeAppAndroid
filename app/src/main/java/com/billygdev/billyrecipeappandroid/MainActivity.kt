@@ -106,25 +106,25 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                 recipeArr += Recipe(0, currentSelectedRecipeTypeID, "Taco", "taco.jpg", mockText, mockText, mockPrepTimes)
             }
             2 -> {
-                addImageToDocumentPath(R.drawable.burrito, "aglioolio.jpg")
-                addImageToDocumentPath(R.drawable.quesaddila, "pizza.jpg")
-                addImageToDocumentPath(R.drawable.taco, "carbonara.jpg")
+                addImageToDocumentPath(R.drawable.aglioolio, "aglioolio.jpg")
+                addImageToDocumentPath(R.drawable.pizza, "pizza.jpg")
+                addImageToDocumentPath(R.drawable.carbonara, "carbonara.jpg")
                 recipeArr += Recipe(0, currentSelectedRecipeTypeID, "Aglio Olio", "aglioolio.jpg", mockText, mockText, mockPrepTimes)
                 recipeArr += Recipe(0, currentSelectedRecipeTypeID, "Pizza", "pizza.jpg", mockText, mockText, mockPrepTimes)
                 recipeArr += Recipe(0, currentSelectedRecipeTypeID, "Carbonara", "carbonara.jpg", mockText, mockText, mockPrepTimes)
             }
             3 -> {
-                addImageToDocumentPath(R.drawable.burrito, "sushi.jpg")
-                addImageToDocumentPath(R.drawable.quesaddila, "soba.jpg")
-                addImageToDocumentPath(R.drawable.taco, "udon.jpg")
+                addImageToDocumentPath(R.drawable.sushi, "sushi.jpg")
+                addImageToDocumentPath(R.drawable.soba, "soba.jpg")
+                addImageToDocumentPath(R.drawable.udon, "udon.jpg")
                 recipeArr += Recipe(0, currentSelectedRecipeTypeID, "Sushi", "sushi.jpg", mockText, mockText, mockPrepTimes)
                 recipeArr += Recipe(0, currentSelectedRecipeTypeID, "Soba", "soba.jpg", mockText, mockText, mockPrepTimes)
                 recipeArr += Recipe(0, currentSelectedRecipeTypeID, "Udon", "udon.jpg", mockText, mockText, mockPrepTimes)
             }
             4 -> {
-                addImageToDocumentPath(R.drawable.burrito, "kimchi.jpg")
-                addImageToDocumentPath(R.drawable.quesaddila, "friedchicken.jpg")
-                addImageToDocumentPath(R.drawable.taco, "bibimbap.jpg")
+                addImageToDocumentPath(R.drawable.kimchi, "kimchi.jpg")
+                addImageToDocumentPath(R.drawable.friedchicken, "friedchicken.jpg")
+                addImageToDocumentPath(R.drawable.bibimbap, "bibimbap.jpg")
                 recipeArr += Recipe(0, currentSelectedRecipeTypeID, "Kimchi", "kimchi.jpg", mockText, mockText, mockPrepTimes)
                 recipeArr += Recipe(0, currentSelectedRecipeTypeID, "Korean Fried Chicken", "friedchicken.jpg", mockText, mockText, mockPrepTimes)
                 recipeArr += Recipe(0, currentSelectedRecipeTypeID, "Bibimbap", "bibimbap.jpg", mockText, mockText, mockPrepTimes)
