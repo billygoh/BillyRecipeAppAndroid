@@ -13,6 +13,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
 import android.widget.Toast
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_add_update_recipe.*
 import java.io.File
 import java.io.FileOutputStream
@@ -27,12 +28,15 @@ class AddUpdateRecipeActivity : AppCompatActivity() {
     var isEditingRecipe = false
     var imageToUploadURI: Uri? = null
     var recipe: Recipe? = null
+    var selectedRecipeTypeID = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_update_recipe)
 
         isEditingRecipe = intent.getBooleanExtra("isEditingRecipe", false)
+        val sharedPref = this.getSharedPreferences("RECIPE_PREF", Context.MODE_PRIVATE)
+        selectedRecipeTypeID = sharedPref.getInt("selectedRecipeTypeID", 0)
 
         if(!isEditingRecipe) {
             title = "Add Recipe"
@@ -40,6 +44,23 @@ class AddUpdateRecipeActivity : AppCompatActivity() {
         } else {
             title = "Edit Recipe"
             addUpdateRecipeBtn.text = "Update Recipe"
+            val recipeID = intent.getIntExtra("recipeID", 0)
+            val recipeName = intent.getStringExtra("recipeName")
+            val recipeImageURL = intent.getStringExtra("recipeImageURL")
+            val recipePrepTime = intent.getStringExtra("recipePrepTime")
+            val recipeIngredients = intent.getStringExtra("recipeIngredients")
+            val recipeSteps = intent.getStringExtra("recipeSteps")
+
+            recipe = Recipe(recipeID, selectedRecipeTypeID, recipeName, recipeImageURL, recipeIngredients, recipeSteps, recipePrepTime)
+
+            recipeNameET.setText(recipe?.name)
+            recipePrepTimeET.setText(recipe?.prepTime)
+            recipeIngredientET.setText(recipe?.ingredients)
+            recipeStepsET.setText(recipe?.steps)
+
+            val imageURL = "${this.filesDir}/${recipe?.imageURL}"
+            Glide.with(this).load(imageURL).into(recipeAddImageIV)
+
         }
 
         recipeAddImageIV.setOnClickListener(View.OnClickListener {
@@ -94,14 +115,12 @@ class AddUpdateRecipeActivity : AppCompatActivity() {
     }
 
     fun saveDetails() {
-        val sharedPref = this.getSharedPreferences("RECIPE_PREF", Context.MODE_PRIVATE)
-        val selectedRecipeTypeID = sharedPref.getInt("selectedRecipeTypeID", 0)
         var imageFileName = ""
         var success = false
         var successMsg = ""
         if(imageToUploadURI != null) {
             imageFileName = "${SimpleDateFormat("yyyyMMddHHmmss").format(Date())}.jpg"
-            println("imagee:::$imageFileName")
+
             val bm: Bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, imageToUploadURI)
             val file = File(this.filesDir, imageFileName)
 
@@ -133,7 +152,7 @@ class AddUpdateRecipeActivity : AppCompatActivity() {
                 if (imageFileName == "") {
                     imageFileName = recipe!!.imageURL
                 }
-                success = localDB.editRecipe(Recipe(0, selectedRecipeTypeID, recipeNameET.text.toString(), imageFileName, recipeIngredientET.text.toString(), recipeStepsET.text.toString(), recipePrepTimeET.text.toString()))
+                success = localDB.editRecipe(Recipe(recipe!!.id, selectedRecipeTypeID, recipeNameET.text.toString(), imageFileName, recipeIngredientET.text.toString(), recipeStepsET.text.toString(), recipePrepTimeET.text.toString()))
                 successMsg = "Successfully updated recipe!"
             }
         }
