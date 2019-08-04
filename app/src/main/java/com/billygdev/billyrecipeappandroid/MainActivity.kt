@@ -4,11 +4,16 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import kotlinx.android.synthetic.main.activity_main.*
 import org.xmlpull.v1.XmlPullParser
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
-    val localDB = LocalDB(this, null, null, 1, null)
+    private val localDB = LocalDB(this, null, null, 1, null)
+    var spinnerSelectedRecipeTypeID: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +39,15 @@ class MainActivity : AppCompatActivity() {
             }
 
             localDB.populateRecipeTypes(recipeTypeArr)
+
+            recipeTypeSpinner.onItemSelectedListener = this
+            val arrayAdapter = SpinnerCustomAdapter(this, localDB.showRecipeTypes())
+            recipeTypeSpinner.adapter = arrayAdapter
         }
+
+        beginBtn.setOnClickListener(View.OnClickListener {
+            println("clickkkkkkkkk:::")
+        })
     }
 
     private fun checkRecipeTypeSelected(): Boolean {
@@ -49,5 +62,17 @@ class MainActivity : AppCompatActivity() {
         }
 
         return false
+    }
+
+    private fun preAddData() {
+
+    }
+
+    override fun onItemSelected(av: AdapterView<*>?, view: View?, index: Int, id: Long) {
+        spinnerSelectedRecipeTypeID = id.toInt()
+    }
+
+    override fun onNothingSelected(av: AdapterView<*>?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

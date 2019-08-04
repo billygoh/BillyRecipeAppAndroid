@@ -22,10 +22,22 @@
         android:textSize="20sp"
         android:layout_marginTop="20dp"/>
 
-    <Spinner android:layout_width="300px" android:layout_height="500px"
+    <Spinner android:layout_width="wrap_content" android:layout_height="wrap_content"
         android:id="@+id/recipeTypeSpinner"
         android:layout_below="@id/selectRecipeTypeTV"
         android:layout_centerInParent="true"
-        android:layout_marginTop="20dp"></Spinner>
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+    android:textAlignment="center"></Spinner>
+
+    <Button android:layout_width="match_parent" android:layout_height="150px"
+        android:id="@+id/beginBtn"
+        android:text="Begin"
+        android:textSize="20dp"
+        android:textStyle="normal"
+        android:background="#5B8E7D"
+        android:layout_below="@+id/recipeTypeSpinner"
+        android:textColor="@android:color/white"
+        android:layout_margin="20dp"/>
 
 </RelativeLayout>
