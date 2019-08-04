@@ -93,7 +93,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     private fun preAddData(recipeTypeID: Int) {
         var recipeArr: Array<Recipe> = emptyArray()
-        val mockText = ""
+        val mockText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam eu lectus eget purus placerat dignissim non et neque. Ut euismod libero eu ante egestas ultricies. Ut nec dictum metus. Sed lacus nibh, gravida sed blandit sed, aliquet nec sapien. Fusce vulputate nulla nec interdum imperdiet. Duis fringilla quis diam in tempus. Sed pretium luctus mauris nec molestie. Praesent tristique lobortis nisi convallis cursus. Sed non aliquam neque. Suspendisse ut libero facilisis turpis consectetur semper in ac augue. Quisque tincidunt eros tellus, non mollis risus luctus at. Nunc eu posuere augue, eu faucibus nibh. Duis eleifend placerat velit sit amet fermentum. Quisque eu libero at est sodales pellentesque. Nulla pharetra euismod leo, eu blandit dolor pharetra nec. "
         val mockPrepTimes = "30 Minutes"
 
         when(recipeTypeID) {

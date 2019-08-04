@@ -10,7 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
-class RecipeRVCustomAdapter(val context: Context, val recipeArr: ArrayList<Recipe>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class RecipeRVCustomAdapter(val context: Context, val recipeArr: ArrayList<Recipe>, var onItemClick: ((Recipe) -> Unit)?): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun getItemCount(): Int {
         return recipeArr.size
@@ -23,6 +23,10 @@ class RecipeRVCustomAdapter(val context: Context, val recipeArr: ArrayList<Recip
         val imageURL = "${context.filesDir}/${recipe.imageURL}"
         Glide.with(context).load(imageURL).into(viewHolder.recipeItemIV)
         viewHolder.recipeItemTV.text = recipe.name
+
+        viewHolder.itemView.setOnClickListener(View.OnClickListener {
+            onItemClick?.invoke(recipe)
+        })
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

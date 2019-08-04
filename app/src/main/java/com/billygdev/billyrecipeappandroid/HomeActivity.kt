@@ -1,6 +1,7 @@
 package com.billygdev.billyrecipeappandroid
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -30,7 +31,12 @@ class HomeActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         recipeRV.layoutManager = gridLayoutManager
 
         recipeArr = localDB.getRecipeList(selectedRecipeTypeID)
-        adapter = RecipeRVCustomAdapter(this, recipeArr)
+        adapter = RecipeRVCustomAdapter(this, recipeArr, onItemClick = {
+            val intent = Intent(this, RecipeDetailsActivity::class.java)
+            intent.putExtra("selectedRecipeID", it.id)
+            intent.putExtra("selectedRecipeName", it.name)
+            startActivity(intent)
+        })
         recipeRV.adapter = adapter
     }
 
